@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cj.jshintmojo</groupId>
     <artifactId>jshint-maven-plugin</artifactId>
-    <version>1.6.1-SELERA</version>
+    <version>1.6.2-SELERA</version>
     <packaging>maven-plugin</packaging>
 
     <name>${project.artifactId}</name>

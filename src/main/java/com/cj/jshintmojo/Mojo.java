@@ -30,7 +30,6 @@ import com.cj.jshintmojo.jshint.EmbeddedJshintCode;
 import com.cj.jshintmojo.jshint.FunctionalJava;
 import com.cj.jshintmojo.jshint.FunctionalJava.Fn;
 import com.cj.jshintmojo.jshint.JSHint;
-import com.cj.jshintmojo.jshint.JSHint.Error;
 import com.cj.jshintmojo.reporter.CheckStyleReporter;
 import com.cj.jshintmojo.reporter.HTMLReporter;
 import com.cj.jshintmojo.reporter.JSHintReporter;
@@ -376,13 +375,15 @@ public class Mojo extends AbstractMojo {
         }
         File file = StringUtils.isNotBlank(reportFile) ?
                 new File(reportFile) : new File("target/jshint.xml");
+
         getLog().info(String.format("Generating \"JSHint\" report. reporter=%s, reportFile=%s.",
                 reportType, file.getAbsolutePath()));
 
         String report = reporter.report(results);
         Writer writer = null;
         try{
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
+            FileOutputStream fos = FileUtils.openOutputStream(file);
+            writer = new BufferedWriter(new OutputStreamWriter(fos, "utf-8"));
             writer.write(report);
         }catch (IOException e){
             getLog().error(e);
