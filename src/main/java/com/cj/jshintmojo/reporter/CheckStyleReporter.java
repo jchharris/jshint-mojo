@@ -33,7 +33,7 @@ public class CheckStyleReporter implements JSHintReporter {
         for(String file : files){
             Result result = results.get(file);
             buf.append ("\t<file name=\"").append (result.path).append ("\">\n");
-            for(JSHint.Error error : result.errors){
+            for(JSHint.Hint error : result.hints){
                 buf.append(String.format("\t\t<error line=\"%d\" column=\"%d\" message=\"%s\" source=\"jshint.%s\" severity=\"%s\" />\n",
                         error.line.intValue(), error.character.intValue(), encode(error.reason), encode(error.code), severity(error.code)));
             }
@@ -43,7 +43,7 @@ public class CheckStyleReporter implements JSHintReporter {
 
         return buf.toString();
     }
-    
+
     private String severity(String errorCode) {
         if(StringUtils.isNotEmpty(errorCode)){
             switch(errorCode.charAt(0)){
@@ -58,7 +58,7 @@ public class CheckStyleReporter implements JSHintReporter {
         }
         return "warning";
     }
-    
+
     private String encode(String str) {
         if(str == null){
             return "";

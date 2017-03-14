@@ -33,7 +33,7 @@ public class JSLintReporter implements JSHintReporter {
         for(String file : files){
             Result result = results.get(file);
             buf.append("\t<file name=\"").append(result.path).append("\">\n");
-            for(JSHint.Error issue : result.errors){
+            for(JSHint.Hint issue : result.hints){
                 buf.append(String.format("\t\t<issue line=\"%d\" char=\"%d\" reason=\"%s\" evidence=\"%s\" ",
                         issue.line.intValue(), issue.character.intValue(), encode(issue.reason), encode(issue.evidence)));
                 if(StringUtils.isNotEmpty(issue.code)){
@@ -47,7 +47,7 @@ public class JSLintReporter implements JSHintReporter {
 
         return buf.toString();
     }
-    
+
     private String encode(String str) {
         if(str == null){
             return "";

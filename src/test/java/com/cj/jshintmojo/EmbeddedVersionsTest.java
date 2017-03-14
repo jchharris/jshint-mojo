@@ -59,7 +59,7 @@ public class EmbeddedVersionsTest {
         final JSHint jsHint = new JSHint(jshintVersion);
 
         // when
-        List<JSHint.Error> errors = jsHint.run(code, options, globals);
+        List<JSHint.Hint> errors = jsHint.run(code, options, globals);
 
         // then
         Assert.assertNotNull(errors);
@@ -76,7 +76,7 @@ public class EmbeddedVersionsTest {
         final JSHint jsHint = new JSHint(jshintVersion);
 
         // when
-        List<JSHint.Error> errors = jsHint.run(code, options, globals);
+        List<JSHint.Hint> errors = jsHint.run(code, options, globals);
 
         // then
         Assert.assertNotNull(errors);
@@ -92,7 +92,7 @@ public class EmbeddedVersionsTest {
         final JSHint jsHint = new JSHint(jshintVersion);
 
         // when
-        List<JSHint.Error> errors = jsHint.run(code, options, globals);
+        List<JSHint.Hint> errors = jsHint.run(code, options, globals);
 
         // then
         Assert.assertNotNull(errors);
@@ -109,7 +109,7 @@ public class EmbeddedVersionsTest {
         final JSHint jsHint = new JSHint(jshintVersion);
 
         // when
-        List<JSHint.Error> errors = jsHint.run(code, options, globals);
+        List<JSHint.Hint> errors = jsHint.run(code, options, globals);
 
         // then
         Assert.assertNotNull(errors);
@@ -126,7 +126,7 @@ public class EmbeddedVersionsTest {
         final JSHint jsHint = new JSHint(jshintVersion);
 
         // when
-        List<JSHint.Error> errors = jsHint.run(code, options, globals);
+        List<JSHint.Hint> errors = jsHint.run(code, options, globals);
 
         // then
         Assert.assertNotNull(errors);
@@ -143,7 +143,7 @@ public class EmbeddedVersionsTest {
         final JSHint jsHint = new JSHint(jshintVersion);
 
         // when
-        List<JSHint.Error> errors = jsHint.run(code, options, globals);
+        List<JSHint.Hint> errors = jsHint.run(code, options, globals);
 
         // then
         Assert.assertNotNull(errors);
@@ -154,9 +154,9 @@ public class EmbeddedVersionsTest {
         return new ByteArrayInputStream(text.getBytes());
     }
 
-    private static String toString(List<Error> errors) {
+    private static String toString(List<JSHint.Hint> errors) {
         StringBuilder text = new StringBuilder ();
-        for (Error error: errors){
+        for (JSHint.Hint error: errors){
             text.append (error.reason).append ("\n");
         }
         return text.toString();

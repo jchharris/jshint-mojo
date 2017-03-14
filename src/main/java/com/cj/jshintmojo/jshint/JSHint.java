@@ -21,7 +21,8 @@ public class JSHint {
         rhino = new Rhino ();
         try {
             rhino.eval (
-                    "print=function(){};" +
+                    "global=this;" +
+                            "print=function(){};" +
                             "quit=function(){};" +
                             "arguments=[];");
 
@@ -36,8 +37,8 @@ public class JSHint {
         return minusShebang;
     }
 
-    public List<Error> run (InputStream source, String options, String globals) {
-        final List<Error> results = new ArrayList<JSHint.Error> ();
+    public List<Hint> run (InputStream source, String options, String globals) {
+        final List<Hint> results = new ArrayList<JSHint.Hint> ();
 
         String sourceAsText = toString (source);
 
@@ -51,8 +52,17 @@ public class JSHint {
 
             for (Object next : errors) {
                 if (next != null) { // sometimes it seems that the last error in the list is null
-                    Error error = new Error (new JSObject (next));
-                    results.add (error);
+                    JSObject jso = new JSObject(next);
+
+                    /*NativeObject obj = (NativeObject) next;
+                    Set keys = obj.keySet();
+                    System.out.println("Start of obj");
+                    for (Object key : keys) {
+                        System.out.println("Key is: " + key + " Value is: " + obj.get(key));
+                    }
+                    System.out.println("End of obj");*/
+
+                    results.add(Hint.createHint(jso));
                 }
             }
         }
@@ -117,27 +127,83 @@ public class JSHint {
         }
     }
 
-    @SuppressWarnings ("serial")
-    public static class Error implements Serializable {
+    public static abstract class Hint implements Serializable {
         public String id, code, raw, evidence, reason;
         public Number line, character;
 
-        public Error (JSObject o) {
-            id = nullSafeToString (o, "id");
-            code = nullSafeToString (o, "code");
-            raw = nullSafeToString (o, "raw");
-            evidence = nullSafeToString (o, "evidence");
-            line = o.dot ("line");
-            character = o.dot ("character");
-            reason = nullSafeToString (o, "reason");
+        public Hint(final JSObject o) {
+            id = o.dot("id");
+            code = o.dot("code");
+            raw = o.dot("raw");
+            evidence = o.dot("evidence");
+            line = o.dot("line");
+            character = o.dot("character");
+            reason = o.dot("reason").toString();
         }
 
-        private String nullSafeToString (JSObject o, String name) {
-            return o.dot (name) != null ? o.dot (name).toString () : "";
+        public Hint() { }
+
+        public String printLogMessage() {
+            String line = (this.line != null) ? String.valueOf(this.line.intValue()) : "";
+            String character = (this.character != null) ? String.valueOf(this.character.intValue()) : "";
+            return "   " + line + "," + character + ": " + this.reason + " \t(" + this.code + ")";
+        }
+
+        public static Hint createHint(final JSObject jso) {
+            if (jso == null)
+                throw new IllegalArgumentException();
+            String code = (String)jso.dot("code");
+
+            char c = code.charAt(0);
+            Hint hint;
+            switch (c) {
+                case 'E':
+                    hint = new Error(jso);
+                    break;
+                case 'W':
+                    hint = new Warning(jso);
+                    break;
+                case 'I':
+                    hint = new Info(jso);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unexpected char c=" + c);
+            }
+            return hint;
+        }
+
+    }
+
+    @SuppressWarnings("serial")
+    public static class Warning extends Hint implements Serializable {
+
+        public Warning(final JSObject o) {
+            super(o);
         }
 
         // NOTE: for Unit Testing purpose.
-        public Error () {
+        public Warning() { }
+    }
+
+    @SuppressWarnings("serial")
+    public static class Error extends Hint implements Serializable {
+
+        public Error(final JSObject o) {
+            super(o);
         }
+
+        // NOTE: for Unit Testing purpose.
+        public Error() { }
+    }
+
+    @SuppressWarnings("serial")
+    public static class Info extends Hint implements Serializable {
+
+        public Info(final JSObject o) {
+            super(o);
+        }
+
+        // NOTE: for Unit Testing purpose.
+        public Info() { }
     }
 }

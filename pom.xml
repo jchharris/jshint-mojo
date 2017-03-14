@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cj.jshintmojo</groupId>
     <artifactId>jshint-maven-plugin</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.6.1-SELERA</version>
     <packaging>maven-plugin</packaging>
 
     <name>${project.artifactId}</name>
@@ -83,9 +83,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git@github.com:cjdev/jshint-mojo.git</connection>
-        <url>scm:git:git@github.com:cjdev/jshint-mojo.git</url>
-        <developerConnection>scm:git:git@github.com:cjdev/jshint-mojo.git</developerConnection>
+        <connection>scm:git:git@github.com:jchharris/jshint-mojo.git</connection>
+        <url>scm:git:git@github.com:jchharris/jshint-mojo.git</url>
+        <developerConnection>scm:git:git@github.com:jchharris/jshint-mojo.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
