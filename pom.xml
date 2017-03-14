@@ -97,4 +97,19 @@
         </developer>
     </developers>
     <!--   END: STUFF REQUIRED BY THE CENTRAL REPO -->
+
+    <!-- End snapshots mode -->
+    <distributionManagement>
+        <repository>
+            <id>seleraReleases</id>
+            <name>Selera repository</name>
+            <url>http://nexus.selera.com.au/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>seleraSnapshots</id>
+            <name>Selera Snapshot repository</name>
+            <url>http://nexus.selera.com.au/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
